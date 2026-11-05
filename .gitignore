@@ -1,0 +1,18 @@
+# Compilación y Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+hs_err_pid*
+
+# IDEs y configuración local
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
