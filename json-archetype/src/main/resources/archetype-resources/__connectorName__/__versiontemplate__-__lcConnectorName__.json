@@ -1,0 +1,9 @@
+{
+  "displayName": "${connectorName}",
+  "id": "${lcConnectorName}",
+  "templateVersion": "${versiontemplate}",
+  "connectorDisplayName": "${connectorName} Connector",
+  "connectorName": "org.forgerock.openicf.${lcConnectorName}.${connectorName}Connector",
+  "image": "${lcConnectorName}.svg",
+  "description": "Configuración generada para ${connectorName}"
+}
