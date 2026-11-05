@@ -1,22 +1,57 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0-xsd.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.tuempresa.archetypes</groupId>
-    <artifactId>json-archetype</artifactId>
+    <groupId>io.github.misaelpare</groupId>
+    <artifactId>json-generator-plugin</artifactId>
     <version>1.0.0</version>
-    <packaging>maven-archetype</packaging>
-
-    <name>JSON Archetype</name>
+    <packaging>pom</packaging>
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.archetype</groupId>
-                <artifactId>archetype-packaging</artifactId>
-                <version>3.2.1</version>
-            </extension>
-        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-json</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <fail message="Debes especificar el parámetro -DconnectorName (ej: -DconnectorName=Fieldglass)">
+                                    <condition>
+                                        <not><isset property="connectorName"/></not>
+                                    </condition>
+                                </fail>
+                                
+                                <!-- Valores por defecto -->
+                                <property name="lcConnectorName" value="${connectorName}"/>
+                                <property name="versiontemplate" value="1.0"/>
+
+                                <!-- 1. Crear la carpeta con el nombre dinámico -->
+                                <mkdir dir="${connectorName}"/>
+
+                                <!-- 2. Copiar el JSON a la carpeta -->
+                                <copy file="template.json" tofile="${connectorName}/${versiontemplate}-${lcConnectorName}.json" overwrite="true">
+                                    <filterset begintoken="@" endtoken="@">
+                                        <filter token="connectorName" value="${connectorName}"/>
+                                        <filter token="lcConnectorName" value="${lcConnectorName}"/>
+                                        <filter token="versiontemplate" value="${versiontemplate}"/>
+                                    </filterset>
+                                </copy>
+                                
+                                <echo message="✅ ¡Estructura generada con éxito en: ${connectorName}/${versiontemplate}-${lcConnectorName}.json!"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
